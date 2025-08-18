@@ -1,0 +1,12 @@
+
+.env
+package-lock.json
+
+sss.json
+text.txt
+
+uploads/*
+./index.htm
+.vercel
+node_modules
+*.zip
