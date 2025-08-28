@@ -11,7 +11,7 @@ const register = async (req, res) => {
     }
 
     const [users] = await db.execute(
-      'SELECT * FROM User WHERE username = ?',
+      'SELECT * FROM Users WHERE username = ?',
       [username]
     );
 
@@ -22,7 +22,7 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const [result] = await db.execute(
-      'INSERT INTO User (username, password, role) VALUES (?, ?, ?)',
+      'INSERT INTO Users (username, password, role) VALUES (?, ?, ?)',
       [username, hashedPassword, 'ADMIN']
     );
 

@@ -2,27 +2,31 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-app.use(cors({
-  origin: ['https://admin.caffecino.az', 'https://caffecino.az', 'http://localhost:5555', 'http://localhost:3999'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true 
-}));
+// app.use(cors({
+//   origin: ['https://admin.caffecino.az', 'https://caffecino.az', 'http://localhost:5555', 'http://localhost:3999'],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   credentials: true 
+// }));
 
-app.options('*', cors());
+// app.options('*', cors());
+
+app.use(cors())
 
 require('dotenv/config');
 
-const { loginRouter, categoryRouter, imgRouter, productRouter } = require('./src/routes');
+const { loginRouter, imgRouter, landingRouter } = require('./src/routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const path = require('path');
+const router = require('./src/routes/landing');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/auth', loginRouter);
-app.use('/categories', categoryRouter);
 app.use('/img', imgRouter);
-app.use('/products', productRouter);
+app.use('/auth', loginRouter);
+
+app.use('/landing', landingRouter);
+// app.use('/products', productRouter);
 
 const PORT = process.env.PORT || 3000;
 

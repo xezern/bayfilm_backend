@@ -16,7 +16,7 @@ const auth = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const [rows] = await db.execute('SELECT * FROM User WHERE id = ?', [decoded.userid]);
+        const [rows] = await db.execute('SELECT * FROM Users WHERE id = ?', [decoded.userid]);
         if (rows.length === 0) {
             return res.status(401).json({ error: 'Unauthorized: Invalid user' });
         }

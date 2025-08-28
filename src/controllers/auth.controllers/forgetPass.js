@@ -14,7 +14,7 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const [rows] = await db.execute('SELECT * FROM User WHERE email = ?', [email]);
+        const [rows] = await db.execute('SELECT * FROM Users WHERE email = ?', [email]);
         if (rows.length === 0) {
             return res.status(400).json({ error: 'User with this email does not exist' });
         }

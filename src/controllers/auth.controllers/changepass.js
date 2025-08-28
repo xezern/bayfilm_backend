@@ -5,9 +5,6 @@ const changePassword = async (req, res) => {
     const { oldPassword, newPassword, confirmPassword } = req.body;
     const userid = req.user.id;
 
-    console.log(oldPassword, newPassword, confirmPassword);
-
-
     if (!userid) {
         return res.status(400).json({ error: 'User ID missing' });
     }
@@ -21,9 +18,9 @@ const changePassword = async (req, res) => {
     }
 
     try {
-        const [rows] = await db.execute('SELECT * FROM User WHERE id = ?', [userid]);
+        const [rows] = await db.execute('SELECT * FROM Users WHERE id = ?', [userid]);
         if (rows.length === 0) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'Users not found' });
         }
 
         const user = rows[0];
@@ -33,7 +30,7 @@ const changePassword = async (req, res) => {
         }
 
         const hashed = await bcrypt.hash(newPassword, 10);
-        await db.execute('UPDATE User SET password = ? WHERE id = ?', [hashed, userid]);
+        await db.execute('UPDATE Users SET password = ? WHERE id = ?', [hashed, userid]);
 
         res.json({ message: 'Password updated successfully' });
     } catch (err) {

@@ -7,7 +7,7 @@ const login = async (req, res) => {
         const { username, password } = req.body;
 
         const [rows] = await db.execute(
-            'SELECT * FROM User WHERE username = ?',
+            'SELECT * FROM Users WHERE username = ?',
             [username]
         );
 

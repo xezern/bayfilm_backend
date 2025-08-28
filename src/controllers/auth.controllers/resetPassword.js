@@ -6,7 +6,7 @@ const resetPassword = async (req, res) => {
 
   try {
     const [rows] = await db.execute(
-      'SELECT * FROM User WHERE resetToken = ? AND resetTokenExpires > NOW()',
+      'SELECT * FROM Users WHERE resetToken = ? AND resetTokenExpires > NOW()',
       [token]
     );
 
@@ -18,7 +18,7 @@ const resetPassword = async (req, res) => {
     const hashed = await bcrypt.hash(newPassword, 10);
 
     await db.execute(
-      'UPDATE User SET password = ?, resetToken = NULL, resetTokenExpires = NULL WHERE id = ?',
+      'UPDATE Users SET password = ?, resetToken = NULL, resetTokenExpires = NULL WHERE id = ?',
       [hashed, user.id]
     );
 
