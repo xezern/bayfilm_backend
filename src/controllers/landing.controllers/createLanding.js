@@ -11,7 +11,7 @@ const createLanding = async (req, res) => {
                 header_img, grid_images, title, label, description, about_image, location, mail, number, instagram, tiktok, payment
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                header_img, JSON.stringify(grid_images), title, label, description, about_image, location, mail, number, instagram, tiktok, payment
+                header_img, grid_images, title, label, description, about_image, location, mail, number, instagram, tiktok, payment
             ]
         );
 

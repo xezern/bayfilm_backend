@@ -14,7 +14,7 @@ app.use(cors())
 
 require('dotenv/config');
 
-const { loginRouter, imgRouter, landingRouter } = require('./src/routes');
+const { loginRouter, imgRouter, landingRouter, categoryRouter } = require('./src/routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,7 +26,7 @@ app.use('/img', imgRouter);
 app.use('/auth', loginRouter);
 
 app.use('/landing', landingRouter);
-// app.use('/products', productRouter);
+app.use('/category', categoryRouter);
 
 const PORT = process.env.PORT || 3000;
 

@@ -3,21 +3,12 @@ const { z } = require('zod');
 const fs = require('fs');
 const path = require('path');
 
-const deleteCategoryByIdSchema = z.object({
-  id: z.number()
-    .int({ message: 'Category ID must be an integer' })
-    .min(1, { message: 'Category ID is required' }),
-});
-
 const deleteCategoryById = async (req, res) => {
-  const parseResult = deleteCategoryByIdSchema.safeParse({ id: Number(req.params.id) });
 
-  if (!parseResult.success) {
-    return res.status(400).json({ errors: parseResult });
-  }
 
   try {
-    const { id } = parseResult.data;
+    const { id } = req.params;
+    if (!id) return res.status(400).json({ message: "id mutleq göndərilməlidir!" })
 
     const [rows] = await db.execute('SELECT * FROM Category WHERE id = ?', [id]);
     if (rows.length === 0) {
@@ -25,7 +16,7 @@ const deleteCategoryById = async (req, res) => {
     }
 
     const category = rows[0];
-    const imgs = JSON.parse(category.img);
+    const imgs = JSON.parse(category.image);
 
     if (imgs && imgs.length > 0) {
       for (const imageUrl of imgs) {

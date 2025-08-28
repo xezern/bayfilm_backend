@@ -1,33 +1,29 @@
-const db = require('../../config/db'); // Nəzərə alındı
-const { categorySchema } = require('../../schema/categories.schema');
+const db = require('../../config/db');
 
-const createCategory = async (req, res) => {
-  const parseResult = categorySchema.safeParse(req.body);
-  if (!parseResult.success) {
-    return res.status(400).json({ validation_errors: parseResult });
-  }
-
+const createLanding = async (req, res) => {
   try {
-    const { name_az, name_en, name_ru, img } = parseResult.data;
+    const { image, title } = req.body;
+    if (!image || !title) return res.status(400).json({ message: "image ve ya title mütləq göndərilməlidir" })
 
     const [result] = await db.execute(
-      'INSERT INTO Category (name_az, name_en, name_ru, img) VALUES (?, ?, ?, ?)',
-      [name_az, name_en, name_ru, JSON.stringify(img)]
+      `INSERT INTO Category (
+                image, title
+            ) VALUES (?, ?)`,
+      [
+        title, image
+      ]
     );
 
-    const newCategory = {
+    const product = {
       id: result.insertId,
-      name_az,
-      name_en,
-      name_ru,
-      img,
+      ...req.body
     };
 
-    res.status(201).json(newCategory);
+    res.status(201).json({ status: true, product });
   } catch (error) {
-    console.error('Create category error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error(error);
+    res.status(500).json({ error: 'Daxili server xətası' });
   }
 };
 
-module.exports = createCategory;
+module.exports = createLanding;
