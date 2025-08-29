@@ -11,17 +11,14 @@ function createImg(req, res) {
     }
 
     try {
-        // Şəkilin orijinal yeri
         const inputPath = path.join(__dirname, '..', '..', '..', 'uploads', req.file.filename);
 
-        // Şəkilin optimallaşdırılmış yeri
         const optimizedFileName = `${Date.now()}-${req.file.filename.replaceAll(" ", '')}`;
         const outputPath = path.join(__dirname, '..', '..', '..', 'uploads', optimizedFileName);
 
-        // Şəkli optimallaşdırırıq
         sharp(inputPath)
-            .resize(800) // Maksimum 800px genişlik
-            .jpeg({ quality: 90 }) // JPEG formatında keyfiyyətini 80 edir
+            .resize(800) 
+            .jpeg({ quality: 90 })
             .toFile(outputPath, (err, info) => {
                 if (err) {
                     return res.status(500).json({
@@ -31,7 +28,6 @@ function createImg(req, res) {
 
                 fs.unlinkSync(inputPath);
 
-                // Optimallaşdırılmış şəkilin serverə saxlanılması
                 res.status(201).json({
                     message: 'Şəkil uğurla yükləndi və optimallaşdırıldı',
                     file: {
