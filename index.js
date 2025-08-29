@@ -14,19 +14,19 @@ app.use(cors())
 
 require('dotenv/config');
 
-const { loginRouter, imgRouter, landingRouter, categoryRouter } = require('./src/routes');
+const { loginRouter, imgRouter, landingRouter, categoryRouter , galeryRouter} = require('./src/routes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const path = require('path');
-const router = require('./src/routes/landing');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/img', imgRouter);
 app.use('/auth', loginRouter);
 
 app.use('/landing', landingRouter);
 app.use('/category', categoryRouter);
+app.use('/galery', galeryRouter);
 
 const PORT = process.env.PORT || 3000;
 

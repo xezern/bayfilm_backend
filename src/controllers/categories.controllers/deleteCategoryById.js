@@ -4,8 +4,6 @@ const fs = require('fs');
 const path = require('path');
 
 const deleteCategoryById = async (req, res) => {
-
-
   try {
     const { id } = req.params;
     if (!id) return res.status(400).json({ message: "id mutleq göndərilməlidir!" })
@@ -16,22 +14,20 @@ const deleteCategoryById = async (req, res) => {
     }
 
     const category = rows[0];
-    const imgs = JSON.parse(category.image);
+    const imgs = category.image
 
-    if (imgs && imgs.length > 0) {
-      for (const imageUrl of imgs) {
-        const filename = imageUrl.split('/').pop();
-        const filePath = path.join(__dirname, '..', '..', '..', 'uploads', filename);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-      }
+    const filename = imgs.split('/').pop();
+    console.log(filename);
+
+    const filePath = path.join(__dirname, '..', '..', '..', 'uploads', filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
     }
 
     await db.execute('DELETE FROM Category WHERE id = ?', [id]);
 
     res.status(200).json({
-      deletecat: { ...category, img: JSON.parse(category.img) },
+      deletecat: { ...category },
       message: 'Category deleted successfully',
     });
   } catch (error) {

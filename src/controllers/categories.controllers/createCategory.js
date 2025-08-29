@@ -5,13 +5,12 @@ const createLanding = async (req, res) => {
     const { image, title } = req.body;
     if (!image || !title) return res.status(400).json({ message: "image ve ya title mütləq göndərilməlidir" })
 
+    const [categories] = await db.execute('SELECT * FROM Category');
+    if (categories.length >= 4) return res.status(400).json({ message: "Maksimum 4 Kateqosiya ola biler!" })
+
     const [result] = await db.execute(
-      `INSERT INTO Category (
-                image, title
-            ) VALUES (?, ?)`,
-      [
-        title, image
-      ]
+      `INSERT INTO Category ( image, title ) VALUES (?, ?)`,
+      [ title, image]
     );
 
     const product = {
